@@ -49,15 +49,13 @@ export const UserStorage = ({ children }) => {
     }
   };
 
-  const userLogout = React.useCallback(async () => {
-    navigate('/login');
+  const userLogout = React.useCallback(() => {
     setData(null);
     setError(null);
     setLoading(false);
     setLogin(false);
     localStorage.removeItem('token');
-    console.log("I'm here");
-    console.log("I'm here again");
+    navigate('/login');
   }, [navigate]);
 
   // ao carregar a pagina, verificar apenas uma vez se existe um token de autenticação valido
@@ -83,8 +81,12 @@ export const UserStorage = ({ children }) => {
       }
     };
 
+    if (login === false) {
+      userLogout();
+    }
+
     autoLogin();
-  }, [userLogout]);
+  }, [login, userLogout]);
 
   return (
     <UserContext.Provider
