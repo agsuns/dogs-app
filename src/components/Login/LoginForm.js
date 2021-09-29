@@ -1,30 +1,22 @@
 import React from 'react';
 import Input from '../Forms/Input';
 import Button from '../Forms/Button';
+import useForm from '../../Hooks/useForm';
 import styles from './LoginForm.module.css';
+import { GET_USER, TOKEN_POST } from '../../api';
+import { UserContext } from '../../UserContext';
 
 export default function LoginForm() {
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const username = useForm();
+  const password = useForm();
+  const { userLogin, error, loading } = React.useContext(UserContext);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const postFetch = async (url) => {
-      const result = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      console.log(result);
-      const jsonResponse = await result.json();
-      console.log(jsonResponse);
-    };
-
-    postFetch('https://dogsapi.origamid.dev/json/jwt-auth/v1/token');
+    if (username.validate() && password.validate()) {
+      userLogin(username.value, password.value);
+    }
   };
 
   return (
@@ -34,19 +26,22 @@ export default function LoginForm() {
           label="Username"
           name="username"
           type="text"
-          value={username}
-          setValue={setUsername}
+          {...username}
         ></Input>
 
         <Input
           label="Password"
           name="password"
           type="password"
-          value={password}
-          setValue={setPassword}
+          {...password}
         ></Input>
+        {loading ? (
+          <Button disabled>Carregando...</Button>
+        ) : (
+          <Button type="submit">Submit</Button>
+        )}
 
-        <Button type="submit">Submit</Button>
+        {error && <p>{error}</p>}
       </form>
     </>
   );

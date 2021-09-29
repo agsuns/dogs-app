@@ -1,7 +1,16 @@
 import React from 'react';
 import styles from './Input.module.css';
 
-export default function Input({ label, type, name, value, setValue }) {
+export default function Input({
+  label,
+  type,
+  name,
+  value,
+  setValue,
+  error,
+  onChange,
+  onBlur,
+}) {
   return (
     <>
       <div className={styles.wrapper}>
@@ -13,9 +22,10 @@ export default function Input({ label, type, name, value, setValue }) {
           className={styles.input}
           type={type}
           value={value}
-          onChange={({ target }) => setValue(target.value)}
+          onChange={(event) => onChange(event)}
+          onBlur={onBlur}
         />
-        <p className={styles.error}>Error</p>
+        {error && <p className={styles.error}>{error}</p>}
       </div>
     </>
   );

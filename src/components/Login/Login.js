@@ -1,12 +1,17 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginForm from './LoginForm.js';
 import LoginCreate from './LoginCreate.js';
 import ResetLogin from './ResetLogin.js';
 import LostLogin from './LostLogin.js';
+import { UserContext } from '../../UserContext.js';
 
 export default function Login() {
-  return (
+  const { login } = React.useContext(UserContext);
+
+  return login ? (
+    <Navigate to="/conta" />
+  ) : (
     <>
       <Routes>
         <Route path="/" element={<LoginForm></LoginForm>}></Route>
