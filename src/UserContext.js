@@ -60,6 +60,7 @@ export const UserStorage = ({ children }) => {
 
   // ao carregar a pagina, verificar apenas uma vez se existe um token de autenticação valido
   React.useEffect(() => {
+    console.log("I'm extremely bi");
     console.log('auto login');
     const autoLogin = async () => {
       const token = localStorage.getItem('token');
